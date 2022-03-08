@@ -20,11 +20,27 @@ public static class StartupExtensions
     /// <returns>The service collection with RabbitMQ dependencies.</returns>
     public static IServiceCollection UseRabbitMQ(this IServiceCollection services, IConfiguration configuration)
     {
-        services.AddSingleton<IRabbitMQConfiguration>(configuration.BindAs<RabbitMQConfiguration>())
+        return services.AddSingleton<IRabbitMQConfiguration>(configuration.BindAs<RabbitMQConfiguration>())
             .AddSingleton<RabbitMQConnectionProvider>()
             .AddSingleton<IMessagingService, MessagingService>();
+    }
 
-        return services;
+    /// <summary>
+    /// Register a message subscriber.
+    /// </summary>
+    /// <remarks>
+    /// Subscribers must be resolvable as both <see cref="IMessageSubscriber"/> and <see cref="TSubscriber"/> to be used
+    /// successfully in my implementation. There's probably way better ways to handle this, but I'm dumb so this is how
+    /// I'm doing it.
+    /// </remarks>
+    /// <param name="services">The service collection.</param>
+    /// <typeparam name="TSubscriber">The message subscriber to register.</typeparam>
+    /// <returns>The service collection with the message subscriber registered.</returns>
+    public static IServiceCollection AddSubscriber<TSubscriber>(this IServiceCollection services)
+        where TSubscriber : class, IMessageSubscriber
+    {
+        return services.AddTransient<IMessageSubscriber, TSubscriber>()
+            .AddTransient<TSubscriber>();
     }
 
     /// <summary>
@@ -34,7 +50,7 @@ public static class StartupExtensions
     /// <returns>The service provider.</returns>
     public static IServiceProvider InitializeRabbitMQ(this IServiceProvider services)
     {
-        var service = services.GetRequiredService<MessagingService>();
+        MessagingService service = (MessagingService) services.GetRequiredService<IMessagingService>();
 
         service.EnsureTopology();
         Task.Run(() => service.StartConsumers());

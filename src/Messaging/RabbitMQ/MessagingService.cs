@@ -38,7 +38,7 @@ public class MessagingService : IMessagingService, IDisposable
     {
         // get all queue bindings in current domain
         var bindings = AppDomain.CurrentDomain.GetAssemblies()
-            .SelectMany(a => a.GetTypes().Where(t => t.IsSubclassOf(typeof(IMessageSubscriber))))
+            .SelectMany(a => a.GetTypes().Where(t => t.GetInterfaces().Contains(typeof(IMessageSubscriber))))
             .Select(t => t.GetCustomAttribute<QueueBinding>())
             .Where(b => b is not null)
             .OfType<QueueBinding>()
@@ -55,6 +55,7 @@ public class MessagingService : IMessagingService, IDisposable
             channel.ExchangeDeclare(binding.ExchangeName, binding.ExchangeType, true);
             channel.QueueDeclare(binding.QueueName, true, false, false);
             channel.QueueBind(binding.QueueName, binding.ExchangeName, binding.EventName);
+            logger.Information("RabbitMQ queue bound: {queueName}", binding.QueueName);
         }
 
         logger.Information("RabbitMQ topology ensured.");

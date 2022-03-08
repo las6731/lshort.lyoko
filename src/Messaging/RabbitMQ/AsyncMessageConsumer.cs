@@ -25,6 +25,7 @@ public class AsyncMessageConsumer : AsyncEventingBasicConsumer
 
     private async Task HandleMessage(BasicDeliverEventArgs message)
     {
+        Console.WriteLine(message.ConsumerTag);
         var e = JsonSerializer.Deserialize<EventMessage>(message.Body.Span);
         if (e is null) Model.BasicReject(message.DeliveryTag, false); // message is not a valid event
 

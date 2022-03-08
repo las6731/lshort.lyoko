@@ -17,7 +17,7 @@ public class RabbitMQConfiguration : IRabbitMQConfiguration
     /// </summary>
     public RabbitMQConfiguration()
     {
-        ConnectionString = new Uri(string.Empty);
+        ConnectionString = new Uri("amqp://localhost");
         DefaultExchange = string.Empty;
         ThreadsPerQueue = 1;
     }
