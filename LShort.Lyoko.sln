@@ -1,0 +1,68 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 16
+VisualStudioVersion = 16.0.30114.105
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "src", "src", "{01307FC7-D84A-436B-B9A0-165B33995F65}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "LShort.Lyoko.Common", "src\Common\LShort.Lyoko.Common.csproj", "{295EC3CC-17C4-4FF2-AF38-8FCBAFDC40B6}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Messaging", "Messaging", "{C71D3DB4-9816-4643-93AB-D5921D4DA9E6}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "LShort.Lyoko.Messaging.Abstractions", "src\Messaging\Abstractions\LShort.Lyoko.Messaging.Abstractions.csproj", "{13360745-53F3-4DCF-9600-7BDA1FA383B0}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "LShort.Lyoko.Messaging.RabbitMQ", "src\Messaging\RabbitMQ\LShort.Lyoko.Messaging.RabbitMQ.csproj", "{39CF0267-3407-4C98-B6FC-07DAC7CB601D}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "DataAccess", "DataAccess", "{08825ACB-831E-4AE3-A30A-F20A1BE12545}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "LShort.Lyoko.DataAccess.Abstractions", "src\DataAccess\Abstractions\LShort.Lyoko.DataAccess.Abstractions.csproj", "{EA66D8E8-263F-4AA0-BC58-DD64015DE1E4}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "LShort.Lyoko.DataAccess.MongoDb", "src\DataAccess\MongoDb\LShort.Lyoko.DataAccess.MongoDb.csproj", "{E8C9F893-E14F-4CA6-BC30-C85F99BFC010}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "LShort.Lyoko.DataAccess.Postgres", "src\DataAccess\Postgres\LShort.Lyoko.DataAccess.Postgres.csproj", "{7141CC7A-E5E8-4B70-9E74-8FE8923EED8F}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{295EC3CC-17C4-4FF2-AF38-8FCBAFDC40B6}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{295EC3CC-17C4-4FF2-AF38-8FCBAFDC40B6}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{295EC3CC-17C4-4FF2-AF38-8FCBAFDC40B6}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{295EC3CC-17C4-4FF2-AF38-8FCBAFDC40B6}.Release|Any CPU.Build.0 = Release|Any CPU
+		{13360745-53F3-4DCF-9600-7BDA1FA383B0}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{13360745-53F3-4DCF-9600-7BDA1FA383B0}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{13360745-53F3-4DCF-9600-7BDA1FA383B0}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{13360745-53F3-4DCF-9600-7BDA1FA383B0}.Release|Any CPU.Build.0 = Release|Any CPU
+		{39CF0267-3407-4C98-B6FC-07DAC7CB601D}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{39CF0267-3407-4C98-B6FC-07DAC7CB601D}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{39CF0267-3407-4C98-B6FC-07DAC7CB601D}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{39CF0267-3407-4C98-B6FC-07DAC7CB601D}.Release|Any CPU.Build.0 = Release|Any CPU
+		{EA66D8E8-263F-4AA0-BC58-DD64015DE1E4}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{EA66D8E8-263F-4AA0-BC58-DD64015DE1E4}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{EA66D8E8-263F-4AA0-BC58-DD64015DE1E4}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{EA66D8E8-263F-4AA0-BC58-DD64015DE1E4}.Release|Any CPU.Build.0 = Release|Any CPU
+		{E8C9F893-E14F-4CA6-BC30-C85F99BFC010}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{E8C9F893-E14F-4CA6-BC30-C85F99BFC010}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{E8C9F893-E14F-4CA6-BC30-C85F99BFC010}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{E8C9F893-E14F-4CA6-BC30-C85F99BFC010}.Release|Any CPU.Build.0 = Release|Any CPU
+		{7141CC7A-E5E8-4B70-9E74-8FE8923EED8F}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{7141CC7A-E5E8-4B70-9E74-8FE8923EED8F}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{7141CC7A-E5E8-4B70-9E74-8FE8923EED8F}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{7141CC7A-E5E8-4B70-9E74-8FE8923EED8F}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+		{295EC3CC-17C4-4FF2-AF38-8FCBAFDC40B6} = {01307FC7-D84A-436B-B9A0-165B33995F65}
+		{C71D3DB4-9816-4643-93AB-D5921D4DA9E6} = {01307FC7-D84A-436B-B9A0-165B33995F65}
+		{13360745-53F3-4DCF-9600-7BDA1FA383B0} = {C71D3DB4-9816-4643-93AB-D5921D4DA9E6}
+		{39CF0267-3407-4C98-B6FC-07DAC7CB601D} = {C71D3DB4-9816-4643-93AB-D5921D4DA9E6}
+		{08825ACB-831E-4AE3-A30A-F20A1BE12545} = {01307FC7-D84A-436B-B9A0-165B33995F65}
+		{EA66D8E8-263F-4AA0-BC58-DD64015DE1E4} = {08825ACB-831E-4AE3-A30A-F20A1BE12545}
+		{E8C9F893-E14F-4CA6-BC30-C85F99BFC010} = {08825ACB-831E-4AE3-A30A-F20A1BE12545}
+		{7141CC7A-E5E8-4B70-9E74-8FE8923EED8F} = {08825ACB-831E-4AE3-A30A-F20A1BE12545}
+	EndGlobalSection
+EndGlobal

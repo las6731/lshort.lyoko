@@ -1,0 +1,20 @@
+<Project>
+    <PropertyGroup>
+        <IsPackable>true</IsPackable>
+        <Authors>Lukas Short</Authors>
+        <Description>Set of libraries I'm creating for my own use. Others can use them if they'd like, just understand that I make no promises about quality or support.</Description>
+        <PackageLicenseUrl>https://www.github.com/las6731/lshort.lyoko/blob/main/LICENSE.md</PackageLicenseUrl>
+        <RepositoryUrl>https://www.github.com/las6731/lshort.lyoko</RepositoryUrl>
+    </PropertyGroup>
+    <ItemGroup>
+        <PackageReference Include="Nerdbank.GitVersioning" Version="3.4.255">
+            <PrivateAssets>all</PrivateAssets>
+            <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+        </PackageReference>
+        <PackageReference Include="StyleCop.Analyzers" Version="1.1.118">
+            <PrivateAssets>all</PrivateAssets>
+            <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+        </PackageReference>
+        <PackageReference Include="Serilog" Version="2.10.0" />
+    </ItemGroup>
+</Project>
