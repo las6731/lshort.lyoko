@@ -1,5 +1,4 @@
 using System.Reflection;
-using System.Text;
 using System.Text.Json;
 using LShort.Lyoko.Messaging.Abstractions;
 using LShort.Lyoko.Messaging.RabbitMQ.Attributes;
@@ -9,11 +8,22 @@ using RabbitMQ.Client.Events;
 
 namespace LShort.Lyoko.Messaging.RabbitMQ;
 
+/// <summary>
+/// Basic asynchronous message consumer to delegate consumption to a <see cref="IMessageSubscriber"/>.
+/// </summary>
 public class AsyncMessageConsumer : AsyncEventingBasicConsumer
 {
     private readonly IServiceProvider serviceProvider;
     private readonly IEnumerable<Type> subscriberTypes;
 
+    /// <summary>
+    /// Initializes a new instance of the <see cref="AsyncMessageConsumer"/> class.
+    /// </summary>
+    /// <param name="model">The RabbitMQ model.</param>
+    /// <param name="serviceProvider">The service provider.</param>
+    /// <param name="subscriberTypes">
+    /// The types of <see cref="IMessageSubscriber"/> implementations that this consumer is responsible for.
+    /// </param>
     public AsyncMessageConsumer(IModel model, IServiceProvider serviceProvider, IEnumerable<Type> subscriberTypes)
         : base(model)
     {
@@ -25,7 +35,6 @@ public class AsyncMessageConsumer : AsyncEventingBasicConsumer
 
     private async Task HandleMessage(BasicDeliverEventArgs message)
     {
-        Console.WriteLine(message.ConsumerTag);
         var e = JsonSerializer.Deserialize<EventMessage>(message.Body.Span);
         if (e is null) Model.BasicReject(message.DeliveryTag, false); // message is not a valid event
 

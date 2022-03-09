@@ -9,6 +9,13 @@
   <ItemGroup>
     <PackageReference Include="Microsoft.Extensions.Configuration" Version="6.0.0" />
     <PackageReference Include="Microsoft.Extensions.Configuration.Binder" Version="6.0.0" />
+    <PackageReference Include="Serilog.AspNetCore" Version="5.0.0" />
+    <PackageReference Include="Serilog.Expressions" Version="3.3.0" />
+    <PackageReference Include="Serilog.Settings.Configuration" Version="3.3.1-dev-00296" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Reference Include="Microsoft.AspNetCore, Version=6.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60" />
   </ItemGroup>
   
 </Project>

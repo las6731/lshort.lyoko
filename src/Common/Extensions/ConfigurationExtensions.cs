@@ -2,6 +2,9 @@ using Microsoft.Extensions.Configuration;
 
 namespace LShort.Lyoko.Common.Extensions;
 
+/// <summary>
+/// Extension methods that are useful for managing app configurations.
+/// </summary>
 public static class ConfigurationExtensions
 {
     /// <summary>

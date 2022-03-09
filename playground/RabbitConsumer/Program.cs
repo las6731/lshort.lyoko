@@ -1,4 +1,4 @@
-using LShort.Lyoko.Messaging.Abstractions;
+using LShort.Lyoko.Common.Extensions;
 using LShort.Lyoko.Messaging.RabbitMQ.Extensions;
 using RabbitConsumer.Subscribers;
 using Serilog;
@@ -6,18 +6,18 @@ using Serilog;
 var builder = WebApplication.CreateBuilder(args);
 
 // add logging
-builder.Host.UseSerilog((ctx, cfg) => cfg.ReadFrom.Configuration(ctx.Configuration));
+builder.UseSerilog();
 
 // Add services to the container.
 builder.Services
     .UseRabbitMQ(builder.Configuration.GetSection("RabbitMQ"))
-    .AddTransient<TestMessageSubscriber>()
-    .AddTransient<IMessageSubscriber, TestMessageSubscriber>()
+    .AddSubscriber<TestMessageSubscriber>()
     .AddControllers();
 
 var app = builder.Build();
 
-app.UseHttpsRedirection()
+app.UseSerilogRequestLogging()
+    .UseHttpsRedirection()
     .UseRouting()
     .UseCors(x => x
         .AllowAnyMethod()
