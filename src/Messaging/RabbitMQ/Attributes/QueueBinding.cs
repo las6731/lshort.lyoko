@@ -12,9 +12,9 @@ public class QueueBinding : Attribute
 
     public QueueBinding(string eventName, string queueName, string exchangeName, string exchangeType = global::RabbitMQ.Client.ExchangeType.Direct)
     {
-        EventName = eventName;
-        QueueName = queueName;
-        ExchangeName = exchangeName;
-        ExchangeType = exchangeType;
+        this.EventName = eventName;
+        this.QueueName = queueName;
+        this.ExchangeName = exchangeName;
+        this.ExchangeType = exchangeType;
     }
 }

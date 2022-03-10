@@ -30,21 +30,33 @@ public class AsyncMessageConsumer : AsyncEventingBasicConsumer
         this.serviceProvider = serviceProvider;
         this.subscriberTypes = subscriberTypes;
 
-        Received += (_, msg) => HandleMessage(msg);
+        this.Received += (_, msg) => this.HandleMessage(msg);
     }
 
     private async Task HandleMessage(BasicDeliverEventArgs message)
     {
         var e = JsonSerializer.Deserialize<EventMessage>(message.Body.Span);
-        if (e is null) Model.BasicReject(message.DeliveryTag, false); // message is not a valid event
+        if (e is null)
+        {
+            // message is not a valid event
+            this.Model.BasicReject(message.DeliveryTag, false);
+            return;
+        }
 
-        var type = subscriberTypes.FirstOrDefault(t => t.GetCustomAttribute<QueueBinding>()?.EventName == e.Name);
-        if (type is null) Model.BasicNack(message.DeliveryTag, false, true); // app does not contain subscriber for this event
+        var type = this.subscriberTypes.FirstOrDefault(t => t.GetCustomAttribute<QueueBinding>()?.EventName == e.Name);
+        if (type is null)
+        {
+            // app does not contain subscriber for this event
+            this.Model.BasicNack(message.DeliveryTag, false, true);
+            return;
+        }
 
-        var subscriber = (IMessageSubscriber) serviceProvider.GetRequiredService(type!);
+        var subscriber = (IMessageSubscriber) this.serviceProvider.GetRequiredService(type!);
         var result = await subscriber.ConsumeEvent(e!);
 
-        if (result) Model.BasicAck(message.DeliveryTag, false);
-        else Model.BasicNack(message.DeliveryTag, false, true);
+        if (result)
+            this.Model.BasicAck(message.DeliveryTag, false);
+        else
+            this.Model.BasicNack(message.DeliveryTag, false, true);
     }
 }

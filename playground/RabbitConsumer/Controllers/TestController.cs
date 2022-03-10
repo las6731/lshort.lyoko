@@ -20,16 +20,17 @@ public class TestController : Controller
     [Route("")]
     public ActionResult<EventMessage> PublishMessage([FromBody] EventMessage msg)
     {
-        logger.Information("event: {msg}", msg.Name);
+        this.logger.Information("event: {msg}", msg.Name);
         try
         {
             for (int i = 0; i < 10; i++)
             {
-                messagingService.Publish(msg);
+                this.messagingService.Publish(msg);
             }
-        } catch (Exception e)
+        }
+        catch (Exception e)
         {
-            logger.Error(e, "Failed to publish message: {msg}", msg);
+            this.logger.Error(e, "Failed to publish message: {msg}", msg);
             return this.BadRequest();
         }
 

@@ -40,9 +40,19 @@ public class EventMessage
     [DataMember(Name = "schemaVersion")]
     public Version SchemaVersion { get; init; }
 
+    public EventMessage()
+    {
+        this.Id = Guid.Empty;
+        this.CorrelationId = Guid.Empty;
+        this.Name = string.Empty;
+        this.Payload = string.Empty;
+        this.Timestamp = DateTime.MinValue;
+        this.SchemaVersion = new Version("1.0");
+    }
+
     public T GetPayload<T>()
     {
-        var json = JsonSerializer.Serialize(Payload);
+        var json = JsonSerializer.Serialize(this.Payload);
         return JsonSerializer.Deserialize<T>(json) ?? throw new InvalidOperationException($"Event payload does not match {typeof(T)}");
     }
 }

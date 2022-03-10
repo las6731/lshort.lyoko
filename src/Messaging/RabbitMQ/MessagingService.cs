@@ -30,7 +30,7 @@ public class MessagingService : IMessagingService, IDisposable
         this.serviceProvider = serviceProvider;
 
         var connection = connectionProvider.Connect();
-        channel = connection.CreateModel();
+        this.channel = connection.CreateModel();
         this.logger.Information("RabbitMQ connection established.");
     }
 
@@ -44,26 +44,25 @@ public class MessagingService : IMessagingService, IDisposable
             .OfType<QueueBinding>()
             .ToList();
 
-        logger.Information("Ensuring RabbitMQ topology.");
+        this.logger.Information("Ensuring RabbitMQ topology.");
 
         // ensure default exchange
-        if (!string.IsNullOrEmpty(configuration.DefaultExchange))
-            channel.ExchangeDeclare(configuration.DefaultExchange, ExchangeType.Direct, true);
+        if (!string.IsNullOrEmpty(this.configuration.DefaultExchange)) this.channel.ExchangeDeclare(this.configuration.DefaultExchange, ExchangeType.Direct, true);
 
         foreach (var binding in bindings)
         {
-            channel.ExchangeDeclare(binding.ExchangeName, binding.ExchangeType, true);
-            channel.QueueDeclare(binding.QueueName, true, false, false);
-            channel.QueueBind(binding.QueueName, binding.ExchangeName, binding.EventName);
-            logger.Information("RabbitMQ queue bound: {queueName}", binding.QueueName);
+            this.channel.ExchangeDeclare(binding.ExchangeName, binding.ExchangeType, true);
+            this.channel.QueueDeclare(binding.QueueName, true, false, false);
+            this.channel.QueueBind(binding.QueueName, binding.ExchangeName, binding.EventName);
+            this.logger.Information("RabbitMQ queue bound: {queueName}", binding.QueueName);
         }
 
-        logger.Information("RabbitMQ topology ensured.");
+        this.logger.Information("RabbitMQ topology ensured.");
     }
 
     public async Task StartConsumers()
     {
-        var subscriberMap = serviceProvider
+        var subscriberMap = this.serviceProvider
             .GetServices<IMessageSubscriber>()
             .Select(s => s.GetType())
             .Select(t => new { Type = t, Binding = t.GetCustomAttribute<QueueBinding>() })
@@ -73,11 +72,11 @@ public class MessagingService : IMessagingService, IDisposable
 
         foreach (var queue in subscriberMap.Keys)
         {
-            logger.Information("Starting message consumption on queue: {queue}", queue);
-            for (int i = 0; i < configuration.ThreadsPerQueue; i++)
+            this.logger.Information("Starting message consumption on queue: {queue}", queue);
+            for (int i = 0; i < this.configuration.ThreadsPerQueue; i++)
             {
-                var consumer = new AsyncMessageConsumer(channel, serviceProvider, subscriberMap[queue]);
-                await Task.Run(() => channel.BasicConsume(queue, false, consumer));
+                var consumer = new AsyncMessageConsumer(this.channel, this.serviceProvider, subscriberMap[queue]);
+                await Task.Run(() => this.channel.BasicConsume(queue, false, consumer));
             }
         }
     }
@@ -85,24 +84,24 @@ public class MessagingService : IMessagingService, IDisposable
     /// <inheritdoc />
     public void Publish(EventMessage e)
     {
-        Publish(configuration.DefaultExchange, e);
+        this.Publish(this.configuration.DefaultExchange, e);
     }
 
     /// <inheritdoc />
     public void Publish(string exchange, EventMessage e)
     {
         var body = JsonSerializer.SerializeToUtf8Bytes(e);
-        var props = channel.CreateBasicProperties();
+        var props = this.channel.CreateBasicProperties();
         props.ContentType = "application/json";
         props.CorrelationId = e.CorrelationId.ToString();
 
-        channel.BasicPublish(exchange, e.Name, true, props, body);
+        this.channel.BasicPublish(exchange, e.Name, true, props, body);
     }
 
     /// <inheritdoc />
     public void Dispose()
     {
-        channel.Close();
-        logger.Information("RabbitMQ channel closed.");
+        this.channel.Close();
+        this.logger.Information("RabbitMQ channel closed.");
     }
 }

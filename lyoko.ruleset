@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RuleSet Name="LYOKO" Description="" ToolsVersion="15.0">
+    <Rules AnalyzerId="StyleCop.Analyzers" RuleNamespace="StyleCop.Analyzers">
+        <Rule Id="SA1003" Action="None" />
+        <Rule Id="SA1009" Action="None" />
+        <Rule Id="SA1200" Action="None" />
+        <Rule Id="SA1201" Action="None" />
+        <Rule Id="SA1501" Action="None" />
+        <Rule Id="SA1503" Action="None" />
+        <Rule Id="SA1633" Action="None" />
+    </Rules>
+</RuleSet>

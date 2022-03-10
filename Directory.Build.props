@@ -1,0 +1,5 @@
+<Project>
+    <PropertyGroup>
+        <CodeAnalysisRuleSet>$(SolutionDir)lyoko.ruleset</CodeAnalysisRuleSet>
+    </PropertyGroup>
+</Project>

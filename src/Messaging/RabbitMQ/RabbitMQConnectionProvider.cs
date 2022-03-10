@@ -9,7 +9,7 @@ namespace LShort.Lyoko.Messaging.RabbitMQ;
 public class RabbitMQConnectionProvider : IDisposable
 {
     private readonly ConnectionFactory factory;
-    private IConnection connection;
+    private IConnection? connection;
 
     /// <summary>
     /// Initializes a new instance of the <see cref="RabbitMQConnectionProvider"/> class.
@@ -17,11 +17,11 @@ public class RabbitMQConnectionProvider : IDisposable
     /// <param name="configuration">The rabbit configuration.</param>
     public RabbitMQConnectionProvider(IRabbitMQConfiguration configuration)
     {
-        factory = new ConnectionFactory();
-        factory.Uri = configuration.ConnectionString;
+        this.factory = new ConnectionFactory();
+        this.factory.Uri = configuration.ConnectionString;
 
-        factory.DispatchConsumersAsync = true;
-        factory.AutomaticRecoveryEnabled = true;
+        this.factory.DispatchConsumersAsync = true;
+        this.factory.AutomaticRecoveryEnabled = true;
     }
 
     /// <summary>
@@ -30,15 +30,15 @@ public class RabbitMQConnectionProvider : IDisposable
     /// <returns>The RabbitMQ connection.</returns>
     public IConnection Connect()
     {
-        if (connection is not null) return connection;
+        if (this.connection is not null) return this.connection;
 
-        connection = factory.CreateConnection();
-        return connection;
+        this.connection = this.factory.CreateConnection();
+        return this.connection;
     }
 
     /// <inheritdoc />
     public void Dispose()
     {
-        connection.Close();
+        this.connection?.Close();
     }
 }
