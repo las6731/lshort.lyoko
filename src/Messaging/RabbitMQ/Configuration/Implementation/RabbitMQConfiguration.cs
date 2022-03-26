@@ -12,6 +12,12 @@ public class RabbitMQConfiguration : IRabbitMQConfiguration
     /// <inheritdoc />
     public int ThreadsPerQueue { get; set; }
 
+    /// <inheritdoc />
+    public int RetryAttempts { get; set; }
+
+    /// <inheritdoc />
+    public int RetryDelay { get; set; }
+
     /// <summary>
     /// Initializes a new instance of the <see cref="RabbitMQConfiguration"/> class.
     /// </summary>
@@ -20,5 +26,7 @@ public class RabbitMQConfiguration : IRabbitMQConfiguration
         this.ConnectionString = new Uri("amqp://localhost");
         this.DefaultExchange = string.Empty;
         this.ThreadsPerQueue = 1;
+        this.RetryAttempts = 3;
+        this.RetryDelay = 10;
     }
 }

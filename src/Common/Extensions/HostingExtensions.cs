@@ -25,4 +25,25 @@ public static class HostingExtensions
 
         return builder;
     }
+
+    /// <summary>
+    /// Set up routing with basic defaults.
+    /// </summary>
+    /// <remarks>
+    /// Uses CORS without any restrictions, and maps MVC controllers.
+    /// </remarks>
+    /// <param name="app">The application.</param>
+    /// <returns>The application.</returns>
+    public static IApplicationBuilder UseBasicRouting(this IApplicationBuilder app)
+    {
+        app.UseHttpsRedirection()
+            .UseRouting()
+            .UseCors(x => x
+                .AllowAnyMethod()
+                .AllowAnyHeader()
+                .AllowAnyOrigin())
+            .UseEndpoints(endpoints => endpoints.MapControllers());
+
+        return app;
+    }
 }

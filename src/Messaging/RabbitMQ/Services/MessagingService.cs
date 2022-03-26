@@ -1,6 +1,7 @@
 using System.Reflection;
 using System.Text.Json;
 using LShort.Lyoko.Messaging.Abstractions;
+using LShort.Lyoko.Messaging.Abstractions.Services;
 using LShort.Lyoko.Messaging.RabbitMQ.Attributes;
 using LShort.Lyoko.Messaging.RabbitMQ.Configuration;
 using Microsoft.Extensions.DependencyInjection;
@@ -19,11 +20,15 @@ public class MessagingService : IMessagingService, IDisposable
     /// <summary>
     /// Initializes a new instance of the <see cref="MessagingService"/> class.
     /// </summary>
-    /// <param name="logger"></param>
-    /// <param name="configuration"></param>
-    /// <param name="connectionProvider"></param>
-    /// <param name="serviceProvider"></param>
-    public MessagingService(ILogger logger, IRabbitMQConfiguration configuration, RabbitMQConnectionProvider connectionProvider, IServiceProvider serviceProvider)
+    /// <param name="logger">The logger.</param>
+    /// <param name="configuration">The RabbitMQ configuration.</param>
+    /// <param name="connectionProvider">The connection provider.</param>
+    /// <param name="serviceProvider">The service provider.</param>
+    public MessagingService(
+        ILogger logger,
+        IRabbitMQConfiguration configuration,
+        RabbitMQConnectionProvider connectionProvider,
+        IServiceProvider serviceProvider)
     {
         this.logger = logger.ForContext<MessagingService>();
         this.configuration = configuration;
@@ -52,12 +57,37 @@ public class MessagingService : IMessagingService, IDisposable
         foreach (var binding in bindings)
         {
             this.channel.ExchangeDeclare(binding.ExchangeName, binding.ExchangeType, true);
-            this.channel.QueueDeclare(binding.QueueName, true, false, false);
-            this.channel.QueueBind(binding.QueueName, binding.ExchangeName, binding.EventName);
+            this.DeclareAndBindQueue(binding);
             this.logger.Information("RabbitMQ queue bound: {queueName}", binding.QueueName);
         }
 
         this.logger.Information("RabbitMQ topology ensured.");
+    }
+
+    private void DeclareAndBindQueue(QueueBinding binding)
+    {
+        var args = new Dictionary<string, object>();
+        if (this.configuration.RetryAttempts > 0) args.Add("x-dead-letter-exchange", this.DeclareRetryQueue(binding));
+
+        this.channel.QueueDeclare(binding.QueueName, true, false, false, args);
+        this.channel.QueueBind(binding.QueueName, binding.ExchangeName, binding.EventName);
+    }
+
+    private string DeclareRetryQueue(QueueBinding binding)
+    {
+        var args = new Dictionary<string, object>
+        {
+            { "x-dead-letter-exchange", binding.ExchangeName },
+            { "x-message-ttl", this.configuration.RetryDelay * 1000 },
+        };
+        var retryExchange = $"{binding.ExchangeName}-retry";
+        var retryQueue = $"{binding.QueueName}-retry";
+
+        this.channel.ExchangeDeclare(retryExchange, binding.ExchangeType, true);
+        this.channel.QueueDeclare(retryQueue, true, false, false, args);
+        this.channel.QueueBind(retryQueue, retryExchange, binding.EventName);
+
+        return retryExchange;
     }
 
     public async Task StartConsumers()

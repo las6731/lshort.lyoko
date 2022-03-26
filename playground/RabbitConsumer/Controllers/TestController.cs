@@ -1,4 +1,5 @@
 ﻿using LShort.Lyoko.Messaging.Abstractions;
+using LShort.Lyoko.Messaging.Abstractions.Services;
 using Microsoft.AspNetCore.Mvc;
 using ILogger = Serilog.ILogger;
 

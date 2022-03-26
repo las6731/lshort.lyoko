@@ -1,7 +1,9 @@
 using LShort.Lyoko.Common.Extensions;
 using LShort.Lyoko.Messaging.Abstractions;
+using LShort.Lyoko.Messaging.Abstractions.Services;
 using LShort.Lyoko.Messaging.RabbitMQ.Configuration;
 using LShort.Lyoko.Messaging.RabbitMQ.Configuration.Implementation;
+using Microsoft.AspNetCore.Builder;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 
@@ -23,6 +25,30 @@ public static class StartupExtensions
         return services.AddSingleton<IRabbitMQConfiguration>(configuration.BindAs<RabbitMQConfiguration>())
             .AddSingleton<RabbitMQConnectionProvider>()
             .AddSingleton<IMessagingService, MessagingService>();
+    }
+
+    /// <summary>
+    /// Add RabbitMQ dependencies.
+    /// </summary>
+    /// <param name="builder">The application builder.</param>
+    /// <returns>The application builder with RabbitMQ dependencies.</returns>
+    public static WebApplicationBuilder UseRabbitMQ(this WebApplicationBuilder builder)
+    {
+        builder.Services.UseRabbitMQ(builder.Configuration.GetSection("RabbitMQ"));
+
+        return builder;
+    }
+
+    /// <summary>
+    /// Add dependencies for monitoring messages that repeatedly fail to consume.
+    /// </summary>
+    /// <remarks>It is expected that a database provider is also registered to store failed messages.</remarks>
+    /// <param name="services">The service collection.</param>
+    /// <returns>The service collection with failed consumption monitoring dependencies.</returns>
+    public static IServiceCollection UseFailedConsumptionMonitoring(this IServiceCollection services)
+    {
+        return services.AddDistributedMemoryCache()
+            .AddSingleton<IFailedConsumptionSupervisor, FailedConsumptionSupervisor>();
     }
 
     /// <summary>
@@ -56,5 +82,17 @@ public static class StartupExtensions
         Task.Run(() => service.StartConsumers());
 
         return services;
+    }
+
+    /// <summary>
+    /// Initializes RabbitMQ messaging.
+    /// </summary>
+    /// <param name="app">The application.</param>
+    /// <returns>The application.</returns>
+    public static IApplicationBuilder InitializeRabbitMQ(this IApplicationBuilder app)
+    {
+        app.ApplicationServices.InitializeRabbitMQ();
+
+        return app;
     }
 }

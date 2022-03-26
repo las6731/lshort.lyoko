@@ -1,4 +1,4 @@
-namespace LShort.Lyoko.Messaging.Abstractions;
+namespace LShort.Lyoko.Messaging.Abstractions.Services;
 
 public interface IMessagingService
 {

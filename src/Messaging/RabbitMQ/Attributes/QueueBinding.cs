@@ -1,5 +1,6 @@
 namespace LShort.Lyoko.Messaging.RabbitMQ.Attributes;
 
+[AttributeUsage(AttributeTargets.Class)]
 public class QueueBinding : Attribute
 {
     public string EventName { get; init; }

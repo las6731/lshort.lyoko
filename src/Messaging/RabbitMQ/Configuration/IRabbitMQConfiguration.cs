@@ -19,4 +19,14 @@ public interface IRabbitMQConfiguration
     /// How many threads should be created per queue for consuming messages.
     /// </summary>
     public int ThreadsPerQueue { get; set; }
+
+    /// <summary>
+    /// How many times to retry consuming a message before failing to consume.
+    /// </summary>
+    public int RetryAttempts { get; set; }
+
+    /// <summary>
+    /// How many seconds to delay before retrying consumption of a failed message.
+    /// </summary>
+    public int RetryDelay { get; set; }
 }

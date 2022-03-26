@@ -5,26 +5,18 @@ using Serilog;
 
 var builder = WebApplication.CreateBuilder(args);
 
-// add logging
-builder.UseSerilog();
-
-// Add services to the container.
-builder.Services
-    .UseRabbitMQ(builder.Configuration.GetSection("RabbitMQ"))
-    .AddSubscriber<TestMessageSubscriber>()
-    .AddControllers();
+// add services
+builder.UseSerilog()
+    .UseRabbitMQ()
+    .Services
+        .AddSubscriber<TestMessageSubscriber>()
+        .AddControllers();
 
 var app = builder.Build();
 
+// configure services
 app.UseSerilogRequestLogging()
-    .UseHttpsRedirection()
-    .UseRouting()
-    .UseCors(x => x
-        .AllowAnyMethod()
-        .AllowAnyHeader()
-        .AllowAnyOrigin())
-    .UseEndpoints(endpoints => endpoints.MapControllers());
-
-app.Services.InitializeRabbitMQ();
+    .UseBasicRouting()
+    .InitializeRabbitMQ();
 
 app.Run();

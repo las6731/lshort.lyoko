@@ -5,7 +5,7 @@ using System.Text.Json.Serialization;
 namespace LShort.Lyoko.Messaging.Abstractions;
 
 [Serializable]
-[DataContract(Name = "eventMessage")]
+[DataContract]
 public class EventMessage
 {
     [JsonPropertyName("id")]
@@ -40,6 +40,9 @@ public class EventMessage
     [DataMember(Name = "schemaVersion")]
     public Version SchemaVersion { get; init; }
 
+    /// <summary>
+    /// Initializes a new instance of the <see cref="EventMessage"/> class.
+    /// </summary>
     public EventMessage()
     {
         this.Id = Guid.Empty;

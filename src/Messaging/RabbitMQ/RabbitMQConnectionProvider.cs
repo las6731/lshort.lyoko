@@ -17,11 +17,12 @@ public class RabbitMQConnectionProvider : IDisposable
     /// <param name="configuration">The rabbit configuration.</param>
     public RabbitMQConnectionProvider(IRabbitMQConfiguration configuration)
     {
-        this.factory = new ConnectionFactory();
-        this.factory.Uri = configuration.ConnectionString;
-
-        this.factory.DispatchConsumersAsync = true;
-        this.factory.AutomaticRecoveryEnabled = true;
+        this.factory = new ConnectionFactory
+        {
+            Uri = configuration.ConnectionString,
+            DispatchConsumersAsync = true,
+            AutomaticRecoveryEnabled = true,
+        };
     }
 
     /// <summary>
