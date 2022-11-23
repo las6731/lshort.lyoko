@@ -8,3 +8,12 @@ services:
     environment:
       - RABBITMQ_DEFAULT_USER=playground
       - RABBITMQ_DEFAULT_PASS=playground
+  mongo:
+    image: mongo
+    container_name: mongo
+    ports:
+      - "27017:27017"
+    environment:
+      - MONGO_INITDB_ROOT_USERNAME=root
+      - MONGO_INITDB_ROOT_PASSWORD=password
+    entrypoint: [ "/usr/bin/mongod", "--bind_ip_all", "--replSet", "test-set" ]

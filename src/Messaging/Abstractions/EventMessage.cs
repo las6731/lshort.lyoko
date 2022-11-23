@@ -16,6 +16,10 @@ public class EventMessage
     [DataMember(Name = "correlationId")]
     public Guid CorrelationId { get; init; }
 
+    [JsonPropertyName("aggregateId")]
+    [DataMember(Name = "aggregateId")]
+    public Guid AggregateId { get; init; }
+
     [JsonPropertyName("name")]
     [DataMember(Name = "name")]
     public string Name { get; init; }
@@ -47,6 +51,7 @@ public class EventMessage
     {
         this.Id = Guid.Empty;
         this.CorrelationId = Guid.Empty;
+        this.AggregateId = Guid.Empty;
         this.Name = string.Empty;
         this.Payload = string.Empty;
         this.Timestamp = DateTime.MinValue;

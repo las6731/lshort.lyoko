@@ -43,12 +43,12 @@ public class FailedConsumptionSupervisor : IFailedConsumptionSupervisor
 
     private static int TryGetInt(byte[] bytes)
     {
-        if (bytes.Length == 0) return 0;
+        if (bytes.Length is 0) return 0;
         try
         {
             return BitConverter.ToInt32(bytes);
         }
-        catch (Exception e)
+        catch (Exception)
         {
             return 0;
         }

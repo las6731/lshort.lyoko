@@ -1,6 +1,7 @@
 <Project Sdk="Microsoft.NET.Sdk">
 
   <ItemGroup>
+    <ProjectReference Include="..\..\Common\LShort.Lyoko.Common.csproj" />
     <ProjectReference Include="..\Abstractions\LShort.Lyoko.DataAccess.Abstractions.csproj" />
   </ItemGroup>
 

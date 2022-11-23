@@ -36,6 +36,7 @@ public class MessagingService : IMessagingService, IDisposable
 
         var connection = connectionProvider.Connect();
         this.channel = connection.CreateModel();
+        this.channel.ConfirmSelect();
         this.logger.Information("RabbitMQ connection established.");
     }
 
@@ -112,13 +113,13 @@ public class MessagingService : IMessagingService, IDisposable
     }
 
     /// <inheritdoc />
-    public void Publish(EventMessage e)
+    public Task<bool> Publish(EventMessage e)
     {
-        this.Publish(this.configuration.DefaultExchange, e);
+        return this.Publish(this.configuration.DefaultExchange, e);
     }
 
     /// <inheritdoc />
-    public void Publish(string exchange, EventMessage e)
+    public Task<bool> Publish(string exchange, EventMessage e)
     {
         var body = JsonSerializer.SerializeToUtf8Bytes(e);
         var props = this.channel.CreateBasicProperties();
@@ -126,6 +127,7 @@ public class MessagingService : IMessagingService, IDisposable
         props.CorrelationId = e.CorrelationId.ToString();
 
         this.channel.BasicPublish(exchange, e.Name, true, props, body);
+        return Task.Run(() => this.channel.WaitForConfirms());
     }
 
     /// <inheritdoc />

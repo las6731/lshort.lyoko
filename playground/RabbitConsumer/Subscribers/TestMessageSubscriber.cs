@@ -8,7 +8,7 @@ namespace RabbitConsumer.Subscribers;
 /// Example of a basic message subscriber implementation.
 /// </summary>
 [QueueBinding("playground.test.event", "playground.test-queue", "playground.direct")]
-public class TestMessageSubscriber : IMessageSubscriber
+public class TestMessageSubscriber : ITypedMessageSubscriber<string>
 {
     private readonly ILogger logger;
 
@@ -22,10 +22,8 @@ public class TestMessageSubscriber : IMessageSubscriber
     }
 
     /// <inheritdoc />
-    public Task<bool> ConsumeEvent(EventMessage e)
+    public Task<bool> ConsumeEvent(EventMessage e, string payload)
     {
-        var payload = e.GetPayload<string>();
-
         this.logger.ForContext("correlationId", e.CorrelationId)
             .Information("Test event received: {payload}", payload);
 
